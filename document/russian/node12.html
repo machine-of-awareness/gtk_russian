@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>主程序</TITLE>
+<META NAME="description" CONTENT="主程序">
+<META NAME="keywords" CONTENT="russian">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="russian.css">
+
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html183"
+  HREF="node13.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html179"
+  HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html173"
+  HREF="node11.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html181"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/usr/share/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html184"
+  HREF="node13.html">Diamond类</A>
+<B> Up:</B> <A NAME="tex2html180"
+  HREF="node11.html">游戏的结构</A>
+<B> Previous:</B> <A NAME="tex2html174"
+  HREF="node11.html">游戏的结构</A>
+ &nbsp; <B>  <A NAME="tex2html182"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00051000000000000000">
+主程序</A>
+</H2>
+
+<P>
+主程序中绘制程序界面，实现事件回调函数；在expose-event事件中调
+用gdk_draw_drawable，把内存图形显示到绘图区域；在key-press-event事件中调
+用Mass类的russian_mass_leftMove、russian_mass_rightMove等方法响应上下左右按键操
+作；在定时事件中调用DataBase类和Mass类的方法，实现俄罗斯方块的定时下落。
+
+<P>
+主程序中界面由运行区、后备区、开始按键、暂停按键组成，方块毎隔500mS下落一行；程序
+中用table布局，界面为左右结构左边是运行区，右边是后备区、开始按键、暂停按键，参
+见<A HREF="node12.html#fig:interface"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="/usr/share/latex2html/icons/crossref.png"></A>页图<A HREF="#fig:interface">1</A>；运行区显示的是当前的形状，后备
+区中显示将要在运行的形状，如当前形状下落到底，后备形状就成为当前形状，后备区随机
+生成一个后备形状；程序中后备区和开始按键放入GtkVBox控件中，用vbox和alignment实
+现，右边控件紧缩在一起的效果，下面的一段程序：
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:interface"></A><A NAME="395"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1:</STRONG>
+游戏界面</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+
+</DIV>  <IMG
+  WIDTH="350" HEIGHT="331" ALIGN="BOTTOM" BORDER="0"
+ SRC="./interface.jpg"
+ ALT="Image interface"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="804" HEIGHT="641" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="\begin{shaded}\begin{verbatim}// 这里，用vbox和alignment实现，右边�...
+...nment, 1, 2, 2, 3, 0, GTK_FILL\vert GTK_EXPAND, 0, 0);\end{verbatim}\end{shaded}">
+<BR>
+1.0</SMALL>
+<P>
+软件用键盘控制运行区的形状，形状可以左移、右移、下移、变形，分别用键盘的左、右、
+下、上控制，软件还支持emacs操作方式，左移(C-b)，右移(C-f)，下移(C-n)，变形
+(C-p)，直接移到最左边(C-a)，直接移到最右边(C-e)。
+
+<P>
+<BR><HR>
+<ADDRESS>
+the machine of awareness
+2012-09-18
+</ADDRESS>
+</BODY>
+</HTML>

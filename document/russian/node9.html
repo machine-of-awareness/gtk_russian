@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Gtk绘图方式</TITLE>
+<META NAME="description" CONTENT="Gtk绘图方式">
+<META NAME="keywords" CONTENT="russian">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="russian.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="russian.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html144"
+  HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html140"
+  HREF="russian.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html134"
+  HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html142"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/usr/share/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html145"
+  HREF="node10.html">内存中绘图</A>
+<B> Up:</B> <A NAME="tex2html141"
+  HREF="russian.html">russian</A>
+<B> Previous:</B> <A NAME="tex2html135"
+  HREF="node8.html">事件定义</A>
+ &nbsp; <B>  <A NAME="tex2html143"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Gtk绘图方式</A>
+</H1>
+
+<P>
+GtkWidget对象中，GtkDrawingArea是专门用于绘图的，不用设置它的GTK_APP_PAINTABLE
+标记，它的默认expose_event回调函数不绘制形状，不会覆盖你自己绘制的图形。
+
+<P>
+在Gtk中，可以在GtkWidget对象上绘图，但必须设置GTK_APP_PAINTABLE标记，否
+则，当对象接收到对象默认的expose_event事件，你绘的图会被覆盖，当对象发生
+expose_event事件时，事件传递过程是这样的：
+
+<UL>
+<LI>自己定义的expose_event回调函数运行，在函数里绘制需要的图形
+</LI>
+<LI>对象默认的expose_event回调函数运行，如果对象的GTK_APP_PAINTABLE标记未
+  置位，会在函数里绘制对象默记形状，你自己绘制的图形会被覆盖；如果对象
+  的GTK_APP_PAINTABLE标记置位，函数不会在函数里绘制对象默记形状
+</LI>
+<LI>父类的expose_event回调函数运行
+</LI>
+</UL>
+
+<P>
+绘图命令将图形绘制在GdkDrawable对象上，GdkDrawable是一个接口，支持绘制图
+形，包括GdkWindow，GdkPixmap，GdkBitmap对象，GdkDrawable是GObject的子类。Gtk绘图
+命令有：绘点、直线、弧线、多边形、文字、图片等。绘图的内容可以在GdkDrawable对象间
+方便的复制，也可以在GdkImage、GdkPixbuf之间复制，这些使GdkDrawable成为功能强大的
+对象。
+
+<P>
+所有的绘图方法操作GdkDrawable对象，并将GdkDrawable对象作为方法的第一个参数。由于
+绘图中经常要指定绘图参数，如绘制的前景色、背景色、线宽等，GDK定义了GdkGC结构包含
+这些信息，这样用一个GdkGC参数，就可以将各种参数传递给绘图方法。
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html146"
+  HREF="node10.html">内存中绘图</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+the machine of awareness
+2012-09-18
+</ADDRESS>
+</BODY>
+</HTML>

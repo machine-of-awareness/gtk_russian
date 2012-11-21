@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>DataBase类</TITLE>
+<META NAME="description" CONTENT="DataBase类">
+<META NAME="keywords" CONTENT="russian">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="russian.css">
+
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html217"
+  HREF="node16.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html213"
+  HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html209"
+  HREF="node14.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html215"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/usr/share/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html218"
+  HREF="node16.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html214"
+  HREF="node11.html">游戏的结构</A>
+<B> Previous:</B> <A NAME="tex2html210"
+  HREF="node14.html">Mass类</A>
+ &nbsp; <B>  <A NAME="tex2html216"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00054000000000000000">
+DataBase类</A>
+</H2>
+
+<P>
+DataBase类包含数据，是一个单例类，包含绘图信息(data_base.h)，游戏运行信息；绘图信息是绘图时
+所用到的所有数据，包含绘图相关的绘图区对象(area)，内存绘图区对象(pixmap)，运行中
+的形状(mass)；游戏运行信息是游戏运行用到的数据，包含容器数组，游戏状态(暂停/结束)。
+
+<P>
+DataBase类定义了7种形状位置信息(_initdat)，变形信息(_muldat)，毎个形状初始化时都要调
+用russian_db_init_mass，根据形状的类型将位置信息数据辅给形状中的方块，毎个形状变形时要调
+用russian_db_do_tranlate，根据变形信息变换形状中的方块位置。
+
+<P>
+DataBase类是所有数据操作的中心，当形状显示时，需设置容器标
+记(russian_db_set_mark)；当形状下落到容器底部时，需分析容器，清除已满的
+行(russian_db_repair_maxtrix)；运行形状是否可以移动由容器边界和标记决
+定，都在DataBase类中判
+断。(russian_db_is_leftmove、russian_db_is_rightmove、russian_db_is_downmove、
+russian_db_is_translate)
+
+<P>
+形状位置信息(_initdat)，是7种形状初始位置信息，如_initdat[1]，数
+据：0,0,0,1,0,2,0,3，说明这个形状的4个方块位置
+是(0,0)，(0,1)，(0,2)，(0,3);用Diamond类的display方法显示出来，是长条形状。
+
+<P>
+
+
+<P>
+<BR><HR>
+<ADDRESS>
+the machine of awareness
+2012-09-18
+</ADDRESS>
+</BODY>
+</HTML>

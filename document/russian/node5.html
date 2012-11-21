@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>类型转换</TITLE>
+<META NAME="description" CONTENT="类型转换">
+<META NAME="keywords" CONTENT="russian">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="russian.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html98"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html94"
+  HREF="node4.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html88"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html96"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/usr/share/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html99"
+  HREF="node6.html">事件处理模式</A>
+<B> Up:</B> <A NAME="tex2html95"
+  HREF="node4.html">Gtk编程特点</A>
+<B> Previous:</B> <A NAME="tex2html89"
+  HREF="node4.html">Gtk编程特点</A>
+ &nbsp; <B>  <A NAME="tex2html97"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+类型转换</A>
+</H2>
+
+<P>
+GTK+一般使用c语言来撰写，c语言不支持面向对象，但GTK使用一些方式，支持一点面向对象
+概念。GTK以结构体(struct)模拟类(class)；新建类用gtk_xxx_new(type)的方式；使 用函
+数名区分毎组类的方法，与GtkWindow相关的方法，都以gtk_window开 头，如要设
+置window的标题，使用:
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="585" HEIGHT="90" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="\begin{shaded}\begin{verbatim}gtk_window_set_title(GTK_WINDOW(window), ''awareness'');\end{verbatim}\end{shaded}">
+<BR>
+1.0</SMALL>
+<P>
+gtk_window_set_title第一个参数接受GtkWindow指针，通过这种方式，一组公用方法就
+专 属GtkWindow类使用了。GTK的类中只有数据，没有方法，调用相关方法要传递类指针；由
+于没有多态概念，传入 的指针必须转换为指定类型，如GTK_WINDOW，把指针转换
+为GtkWindow类型，GTK_WINDOW是一个宏，用来进行指针类型转换，定义如
+下 gtkwindow.h(usr/include/gtk-2.0/gtk)中：
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="637" HEIGHT="117" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="\begin{shaded}\begin{verbatim}...">
+<BR>
+1.0</SMALL>
+<P>
+G_TYPE_CHECK_INSTANCE_CAST宏定义在GLib的 gtype.h(usr/include/glib-2.0/gobject)中：
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="585" HEIGHT="117" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="\begin{shaded}\begin{verbatim}...">
+<BR>
+1.0</SMALL>
+<P>
+G_TYPE_CHECK_INSTANCE_CAST宏会检查instance是否为g_type的一个实例，如果不是 的话就
+发出警示讯息，若是的话就将指标转型为c_type型态。GTK实际上使用结构链接（link）的方
+式，GTK中的类继承关系如下：
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="585" HEIGHT="244" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{shaded}\begin{verbatim}GObject
++--GInitiallyUnowned
++-- GtkObject
+...
+...Widget
++-- GtkContainer
++-- GtkBin
++-- GtkWindow\end{verbatim}\end{shaded}">
+<BR>
+1.0</SMALL>
+<P>
+G_TYPE_CHECK_INSTANCE_CAST就是根据这继承关系作转换的，在GTK定义中，毎个高 层次的
+类都会包含低层次类，如：
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="584" HEIGHT="1032" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="\begin{shaded}\begin{verbatim}struct _GtkWindow
+{
+GtkBin bin;gchar *GSEAL ...
+...allocate_redraws : 1;
+guint has_focus_chain : 1;
+};\end{verbatim}\end{shaded}">
+<BR>
+1.0</SMALL>
+<P>
+GtkWindow的成员有一个GtkBin，GtkContainer的成员中有一个GtkWidget。
+
+<P>
+<BR><HR>
+<ADDRESS>
+the machine of awareness
+2012-09-18
+</ADDRESS>
+</BODY>
+</HTML>

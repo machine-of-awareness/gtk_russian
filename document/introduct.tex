@@ -1,0 +1,50 @@
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "russian"
+%%% End: 
+
+\section{Gtk介绍}
+
+GTK+最初是GIMP的专用开发库，后来发展为Unix-like系統下开发图形界面的应用程序的主流
+开发工具之一。GTK+是自由软件，并且是GNU计划的一部分。GTK+的许可协议是LGPL。
+
+最初，GTK+ 是作为另一个著名的开放源码项目 —— GNU Image Manipulation Program
+(GIMP) —— 的副产品而创建的。在开发早期的 GIMP 版本时，Peter Mattis 和 Spencer
+Kimball 创建了 GTK（它代表 GIMP Toolkit），作为 Motif\footnote{Motif 最初是
+  由 OSF(开放基金协会)开发的一个工业标准的 GUI(图形用户接
+  口)。1996年，OSF 与 X/Open 合并为 Open Group，1997年初，X 联盟结束，并将其归属
+  的项目移交给 Open Group。Open Group 继续开发和支持X窗口系统，Motif，CDE，和其他
+  技术。2000年5月15日，Open Group 使用公共许可证向开放源代码团体发布了 Motif 的源
+  代码。在开放系统(如 Linux)上，可以使用免费的 Motif。} 工具包的替代，后者在那个
+时候不是免费的。（当这个工具包获得了面向对象特性和可扩展性之后，才在名称后面加上
+了一个加号。）
+
+与其他很多部件工具箱不同，GTK+ 并不基于Xt\footnote{Xt Intrinsics又名Xt 或 X
+  Toolkit, 是X Window 的函式庫。Intrinsics 首先提供物件導向的程式設計架構，並引進
+  了「widget」的概念。Motif、OpenLook 和 Lesstif 等即以 Xt 為基礎。Athena
+  Toolkit也是衍生自 Xt Library。但一些知名的工具箱如 FLTK, GTK, 和 Qt 並不使
+  用 Xt library, 反是直接使用 Xlib.}。这一决策优劣互见：优点是GTK+可以应用于其他
+系统，其灵活性也很强；而缺点就是它无法利用以传统方法为X11定制的X资源数据库。GTK+
+最早應用於X Window System，如今已移植至其他平台，諸如Microsoft
+Windows、DirectFB\footnote{DirectFB是一个轻量级的提供硬件图形加速，输入设备处理和
+  抽象的图形库，它集成了支持半透明的视窗系统以及在LinuxFramebuffer驱动之上的多层
+  显示。它是一个用软件封装当前硬件无法支持的图形算法来完成硬件加速的
+  层。DirectFB是为嵌入式系统而设计。它是以最小的资源开销来实现最高的硬件加速性
+  能。}，以及Mac OS X的Quartz\footnote{Quartz是位於Mac OS X的Darwin核心之上的繪圖
+  層，有時候也認為是CoreGraphics。Quartz直接地支援Aqua，藉由顯示2D繪圖圖形來建立
+  使用者介面，包含即時繪製（rendering）和次像素（sub-pixel）精準的反鋸齒。}.
+
+\subsection{为什么使用Gtk+2.0}
+
+Gtk+是自由软件，意味着每个人不仅可以自由地获得和使用这个工具包，还可以在满足某些条
+件的情况下修改并重新发布它。它得到了积极的开发与维护，围绕它有一个充满活力的社区。
+
+GTK+ 是可移植的。这意味着用户可以在许多平台和系统上运行它。另一方面，开发人员可以
+把软件提供给众多用户，却只要编写一次程序，还可以使用许多不同的编程和开发平台、工
+具和编程语言。所有这些都可以理解为更多的潜在用户，您可以利用更好地满足需求的更广
+泛的技能和工具。
+
+GTK+ 是采用软件开发中的最新技术开发的，使用现代的软件意味着，您不会陷在过时的工作
+中，而跟不上时代的发展。持续的维护和开发也意味着您拥有影响工具包的未来发展方向的
+能力。

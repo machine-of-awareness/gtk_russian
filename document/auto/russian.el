@@ -1,0 +1,25 @@
+(TeX-add-style-hook "russian"
+ (lambda ()
+    (TeX-run-style-hooks
+     "xcolor"
+     "table"
+     "hyperref"
+     "framed"
+     "setspace"
+     "fancyhdr"
+     "wrapfig"
+     "graphicx"
+     "amssymb"
+     "amsmath"
+     "latexsym"
+     "latex2e"
+     "ctexart10"
+     "ctexart"
+     "UTF8"
+     "face"
+     "introduct"
+     "object"
+     "draw"
+     "algo"
+     "glade")))
+

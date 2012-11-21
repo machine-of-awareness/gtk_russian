@@ -1,0 +1,159 @@
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "russian"
+%%% End: 
+
+\section{Gtk编程特点}
+
+\subsection{类型转换}
+
+GTK+一般使用c语言来撰写，c语言不支持面向对象，但GTK使用一些方式，支持一点面向对象
+概念。GTK以结构体(struct)模拟类(class)；新建类用gtk\_xxx\_new(type)的方式；使 用函
+数名区分毎组类的方法，与GtkWindow相关的方法，都以gtk\_window开 头，如要设
+置window的标题，使用:
+
+\begin{shell}
+\begin{verbatim}
+gtk_window_set_title(GTK_WINDOW(window), "awareness");
+\end{verbatim}
+\end{shell}
+
+gtk\_window\_set\_title第一个参数接受GtkWindow指针，通过这种方式，一组公用方法就
+专 属GtkWindow类使用了。GTK的类中只有数据，没有方法，调用相关方法要传递类指针；由
+于没有多态概念，传入 的指针必须转换为指定类型，如GTK\_WINDOW，把指针转换
+为GtkWindow类型，GTK\_WINDOW是一个宏，用来进行指针类型转换，定义如
+下 gtkwindow.h(usr/include/gtk-2.0/gtk)中：
+
+\begin{shell}
+\begin{verbatim}
+#define GTK_WINDOW(obj)                                                       
+        (G_TYPE_CHECK_INSTANCE_CAST((obj), GTK_TYPE_WINDOW, GtkWindow))
+\end{verbatim}
+\end{shell}
+
+G\_TYPE\_CHECK\_INSTANCE\_CAST宏定义在GLib的 gtype.h(usr/include/glib-2.0/gobject)中：
+
+\begin{shell}
+\begin{verbatim}
+#define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)
+    (_G_TYPE_CIC ((instance), (g_type), c_type)) 
+\end{verbatim}
+\end{shell}
+
+G\_TYPE\_CHECK\_INSTANCE\_CAST宏会检查instance是否为g\_type的一个实例，如果不是 的话就
+发出警示讯息，若是的话就将指标转型为c\_type型态。GTK实际上使用结构链接（link）的方
+式，GTK中的类继承关系如下：
+
+\begin{shell}
+\begin{verbatim}
+GObject                                                                       
+ +--GInitiallyUnowned                                                         
+     +-- GtkObject                                                            
+           +-- GtkWidget                                                      
+                 +-- GtkContainer                                             
+                       +-- GtkBin                                             
+                             +-- GtkWindow  
+\end{verbatim}
+\end{shell}
+
+G\_TYPE\_CHECK\_INSTANCE\_CAST就是根据这继承关系作转换的，在GTK定义中，毎个高 层次的
+类都会包含低层次类，如：
+
+\begin{shell}
+\begin{verbatim}
+struct _GtkWindow
+{
+  GtkBin bin;
+
+  gchar *GSEAL (title);
+  gchar *GSEAL (wmclass_name);
+  gchar *GSEAL (wmclass_class);
+  gchar *GSEAL (wm_role);
+
+  GtkWidget *GSEAL (focus_widget);
+  GtkWidget *GSEAL (default_widget);
+  GtkWindow *GSEAL (transient_parent);
+  GtkWindowGeometryInfo *GSEAL (geometry_info);
+  GdkWindow *GSEAL (frame);
+  GtkWindowGroup *GSEAL (group);
+
+  guint16 GSEAL (configure_request_count);
+  guint GSEAL (allow_shrink) : 1;
+  guint GSEAL (allow_grow) : 1;
+  guint GSEAL (configure_notify_received) : 1;
+  ...
+}
+
+struct _GtkContainer                                                          
+{                                                                             
+  GtkWidget widget;                                                           
+
+  GtkWidget *focus_child;                                                     
+
+  guint border_width : 16;                                                    
+
+  /*< private >*/                                                             
+  guint need_resize : 1;                                                      
+  guint resize_mode : 2;                                                      
+  guint reallocate_redraws : 1;                                               
+  guint has_focus_chain : 1;                                                  
+}; 
+\end{verbatim}
+\end{shell}
+
+GtkWindow的成员有一个GtkBin，GtkContainer的成员中有一个GtkWidget。
+
+\subsection{事件处理模式}
+
+\subsubsection{事件和信号}
+
+所有图形环境的事件都是从系统（Gnome）传递来的，Gtk当然也是这样，事件通常由用户输
+入产生，如按键、鼠标，或控件焦点改变。当你按下鼠标键，系统（Gnome）就产生事件，并
+放入事件队列中，系统根据鼠标点击的坐标确定是哪个GtkWidget对象产生的事件，如按下
+的是button按钮，事件结构体包将含有坐标信息，产生事件的button指针。
+
+事件分为event和signal，event来自GDK事件体系，GDK事件又来自于系统。信signal是二次
+包装后添加到GTK中的，再次包装的原因是GDK事件不够健壮、灵活。本质上
+说，event是Gdk/Xlib的概念，event是从系统传递来的信息流，event放入队列，在GTK主循
+环中（main loop）处理。signal是GtkWidget的子类，当有鼠标按动时，并不产生信号，信
+号只是记录与之相关的回调函数（callback），signal由GtkWidget对象发出，和GTK主循环
+无关。总之，event产生于系统，用GDK传递到程序，signal由产生GtkWidget对象发出，比
+如，用鼠标按下button按钮时，系统在button上产
+生``button\_press\_event''，接着button发出``cilcked signal''。并不是所有事件都有
+对应信号，如拖曳（drag\_event)就没有对应的signal；相应的，并不是所有signal都有对
+应event ，GtkWidget对象能产生自己的signal。
+
+\subsubsection{事件定义}
+
+为了连结一个事件与Callback函数，一样是使用g\_signal\_connect()，不过处
+理event的Callback函式与signal的Callback函式在宣告时有些不同，以下是Callback函数定
+义：
+
+\begin{shell}
+\begin{verbatim}
+// 处理event回调函数
+gboolean callback_func(
+          GtkWidget *widget, GdkEvent *event, gpointer callback_data);
+// 处理signal回调函数
+void callback_func(
+          GtkWidget *widget,  gpointer callback_data);
+\end{verbatim}
+\end{shell}
+
+处理event的Callback函数多了一个GdkEvent*参数，而返回值的部份，可以控制事件是否进行
+下一步传播，传回TRUE表示这个事件到止已获得处理，事件不用继续传播，将不会发出对应
+的signal，传回FALSE表示事件继续传播，GtkWidget对象发出对应的signal。
+
+event的处理函数会在signal的处理函数之前先处理，以按下按钮为例，基本上的
+顺序为：
+\begin{shell}
+\begin{verbatim}
+按钮按下 --> 发出 button_press_event --> 预设处理函数
+                 --> 发出 clicked signal --> 预设处理函数
+\end{verbatim}
+\end{shell}
+
+您可以设置事件的Callback函数，拦截button\_press\_event，当处理完传回TRUE时，就不
+会发出clicked的signal,也就不会继续预设的signal处理函数，只有在传回FALSE时，才会
+发出clicked的signal，则设置的signal处理函数才会被执行。

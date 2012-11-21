@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>事件和信号</TITLE>
+<META NAME="description" CONTENT="事件和信号">
+<META NAME="keywords" CONTENT="russian">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="russian.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html122"
+  HREF="node8.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html118"
+  HREF="node6.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html112"
+  HREF="node6.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html120"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/usr/share/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html123"
+  HREF="node8.html">事件定义</A>
+<B> Up:</B> <A NAME="tex2html119"
+  HREF="node6.html">事件处理模式</A>
+<B> Previous:</B> <A NAME="tex2html113"
+  HREF="node6.html">事件处理模式</A>
+ &nbsp; <B>  <A NAME="tex2html121"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032100000000000000">
+事件和信号</A>
+</H3>
+
+<P>
+所有图形环境的事件都是从系统（Gnome）传递来的，Gtk当然也是这样，事件通常由用户输
+入产生，如按键、鼠标，或控件焦点改变。当你按下鼠标键，系统（Gnome）就产生事件，并
+放入事件队列中，系统根据鼠标点击的坐标确定是哪个GtkWidget对象产生的事件，如按下
+的是button按钮，事件结构体包将含有坐标信息，产生事件的button指针。
+
+<P>
+事件分为event和signal，event来自GDK事件体系，GDK事件又来自于系统。信signal是二次
+包装后添加到GTK中的，再次包装的原因是GDK事件不够健壮、灵活。本质上
+说，event是Gdk/Xlib的概念，event是从系统传递来的信息流，event放入队列，在GTK主循
+环中（main loop）处理。signal是GtkWidget的子类，当有鼠标按动时，并不产生信号，信
+号只是记录与之相关的回调函数（callback），signal由GtkWidget对象发出，和GTK主循环
+无关。总之，event产生于系统，用GDK传递到程序，signal由产生GtkWidget对象发出，比
+如，用鼠标按下button按钮时，系统在button上产
+生``button_press_event''，接着button发出``cilcked signal''。并不是所有事件都有
+对应信号，如拖曳（drag_event)就没有对应的signal；相应的，并不是所有signal都有对
+应event ，GtkWidget对象能产生自己的signal。
+
+<P>
+<BR><HR>
+<ADDRESS>
+the machine of awareness
+2012-09-18
+</ADDRESS>
+</BODY>
+</HTML>

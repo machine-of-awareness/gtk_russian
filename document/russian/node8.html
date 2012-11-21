@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>事件定义</TITLE>
+<META NAME="description" CONTENT="事件定义">
+<META NAME="keywords" CONTENT="russian">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="russian.css">
+
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html132"
+  HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html128"
+  HREF="node6.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html124"
+  HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html130"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/usr/share/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html133"
+  HREF="node9.html">Gtk绘图方式</A>
+<B> Up:</B> <A NAME="tex2html129"
+  HREF="node6.html">事件处理模式</A>
+<B> Previous:</B> <A NAME="tex2html125"
+  HREF="node7.html">事件和信号</A>
+ &nbsp; <B>  <A NAME="tex2html131"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032200000000000000">
+事件定义</A>
+</H3>
+
+<P>
+为了连结一个事件与Callback函数，一样是使用g_signal_connect()，不过处
+理event的Callback函式与signal的Callback函式在宣告时有些不同，以下是Callback函数定
+义：
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="628" HEIGHT="221" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{shaded}\begin{verbatim}// 处理event回调函数
+gboolean callback_fun...
+...ack_func(
+GtkWidget *widget, gpointer callback_data);\end{verbatim}\end{shaded}">
+<BR>
+1.0</SMALL>
+<P>
+处理event的Callback函数多了一个GdkEvent*参数，而返回值的部份，可以控制事件是否进行
+下一步传播，传回TRUE表示这个事件到止已获得处理，事件不用继续传播，将不会发出对应
+的signal，传回FALSE表示事件继续传播，GtkWidget对象发出对应的signal。
+
+<P>
+event的处理函数会在signal的处理函数之前先处理，以按下按钮为例，基本上的
+顺序为：
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="585" HEIGHT="117" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{shaded}\begin{verbatim}按钮按下 --&gt; 发出 button_press_event --&gt; �...
+...�数
+--&gt; 发出 clicked signal --&gt; 预设处理函数\end{verbatim}\end{shaded}">
+<BR>
+1.0</SMALL>
+<P>
+您可以设置事件的Callback函数，拦截button_press_event，当处理完传回TRUE时，就不
+会发出clicked的signal,也就不会继续预设的signal处理函数，只有在传回FALSE时，才会
+发出clicked的signal，则设置的signal处理函数才会被执行。
+
+<P>
+<BR><HR>
+<ADDRESS>
+the machine of awareness
+2012-09-18
+</ADDRESS>
+</BODY>
+</HTML>

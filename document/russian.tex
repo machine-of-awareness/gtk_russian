@@ -1,0 +1,53 @@
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
+
+\documentclass[UTF8]{ctexart}
+
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{framed}
+\usepackage{hyperref}
+\usepackage[table]{xcolor}
+\definecolor{shadecolor}{rgb}{0.92,0.92,0.92}
+
+\begin{document}
+
+% 页眉 页脚 封面 定义
+\input{face}
+
+% 生成目录
+\tableofcontents
+\newpage
+
+\begin{abstract}
+  作者用Gtk＋2.0编写了俄罗斯方块游戏，作为Gtk+2.0学习的练习，在这里将心得写出来和
+  大家分享。游戏用方向键控制俄罗斯方块的移动与变换，当某行方块全满，自动清除，游
+  戏只是个示例，没有计分系统。
+
+  俄罗斯方块程序写了两个版本，一个版本使用程序写界面，一个版本使用glade设计界面，相
+  比较用glade的版本代码更少，设计更灵活。
+
+  运行环境：Debian6.0，gtk+-2.20.1，编程环境：emacs23.2，gcc-4.4.5，make-3.81。
+\end{abstract}
+
+% 介绍
+\include{introduct}
+% 面向对象
+\include{object}
+% gtk绘图方式
+\include{draw}
+% russian算法
+\include{algo}
+% glade
+\include{glade}
+
+\end{document}
+

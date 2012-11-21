@@ -1,0 +1,435 @@
+\batchmode
+
+
+\documentclass[UTF8]{ctexart}
+\RequirePackage{ifthen}
+
+
+
+
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{framed}
+\usepackage{hyperref}
+\usepackage[table]{xcolor}
+\definecolor{shadecolor}{rgb}{0.92,0.92,0.92}
+
+
+
+
+\usepackage[dvips]{color}
+
+
+\pagecolor[gray]{.7}
+
+\usepackage[]{inputenc}
+
+
+
+\makeatletter
+
+\makeatletter
+\count@=\the\catcode`\_ \catcode`\_=8 
+\newenvironment{tex2html_wrap}{}{}%
+\catcode`\<=12\catcode`\_=\count@
+\newcommand{\providedcommand}[1]{\expandafter\providecommand\csname #1\endcsname}%
+\newcommand{\renewedcommand}[1]{\expandafter\providecommand\csname #1\endcsname{}%
+  \expandafter\renewcommand\csname #1\endcsname}%
+\newcommand{\newedenvironment}[1]{\newenvironment{#1}{}{}\renewenvironment{#1}}%
+\let\newedcommand\renewedcommand
+\let\renewedenvironment\newedenvironment
+\makeatother
+\let\mathon=$
+\let\mathoff=$
+\ifx\AtBeginDocument\undefined \newcommand{\AtBeginDocument}[1]{}\fi
+\newbox\sizebox
+\setlength{\hoffset}{0pt}\setlength{\voffset}{0pt}
+\addtolength{\textheight}{\footskip}\setlength{\footskip}{0pt}
+\addtolength{\textheight}{\topmargin}\setlength{\topmargin}{0pt}
+\addtolength{\textheight}{\headheight}\setlength{\headheight}{0pt}
+\addtolength{\textheight}{\headsep}\setlength{\headsep}{0pt}
+\setlength{\textwidth}{349pt}
+\newwrite\lthtmlwrite
+\makeatletter
+\let\realnormalsize=\normalsize
+\global\topskip=2sp
+\def\preveqno{}\let\real@float=\@float \let\realend@float=\end@float
+\def\@float{\let\@savefreelist\@freelist\real@float}
+\def\liih@math{\ifmmode$\else\bad@math\fi}
+\def\end@float{\realend@float\global\let\@freelist\@savefreelist}
+\let\real@dbflt=\@dbflt \let\end@dblfloat=\end@float
+\let\@largefloatcheck=\relax
+\let\if@boxedmulticols=\iftrue
+\def\@dbflt{\let\@savefreelist\@freelist\real@dbflt}
+\def\adjustnormalsize{\def\normalsize{\mathsurround=0pt \realnormalsize
+ \parindent=0pt\abovedisplayskip=0pt\belowdisplayskip=0pt}%
+ \def\phantompar{\csname par\endcsname}\normalsize}%
+\def\lthtmltypeout#1{{\let\protect\string \immediate\write\lthtmlwrite{#1}}}%
+\newcommand\lthtmlhboxmathA{\adjustnormalsize\setbox\sizebox=\hbox\bgroup\kern.05em }%
+\newcommand\lthtmlhboxmathB{\adjustnormalsize\setbox\sizebox=\hbox to\hsize\bgroup\hfill }%
+\newcommand\lthtmlvboxmathA{\adjustnormalsize\setbox\sizebox=\vbox\bgroup %
+ \let\ifinner=\iffalse \let\)\liih@math }%
+\newcommand\lthtmlboxmathZ{\@next\next\@currlist{}{\def\next{\voidb@x}}%
+ \expandafter\box\next\egroup}%
+\newcommand\lthtmlmathtype[1]{\gdef\lthtmlmathenv{#1}}%
+\newcommand\lthtmllogmath{\dimen0\ht\sizebox \advance\dimen0\dp\sizebox
+  \ifdim\dimen0>.95\vsize
+   \lthtmltypeout{%
+*** image for \lthtmlmathenv\space is too tall at \the\dimen0, reducing to .95 vsize ***}%
+   \ht\sizebox.95\vsize \dp\sizebox\z@ \fi
+  \lthtmltypeout{l2hSize %
+:\lthtmlmathenv:\the\ht\sizebox::\the\dp\sizebox::\the\wd\sizebox.\preveqno}}%
+\newcommand\lthtmlfigureA[1]{\let\@savefreelist\@freelist
+       \lthtmlmathtype{#1}\lthtmlvboxmathA}%
+\newcommand\lthtmlpictureA{\bgroup\catcode`\_=8 \lthtmlpictureB}%
+\newcommand\lthtmlpictureB[1]{\lthtmlmathtype{#1}\egroup
+       \let\@savefreelist\@freelist \lthtmlhboxmathB}%
+\newcommand\lthtmlpictureZ[1]{\hfill\lthtmlfigureZ}%
+\newcommand\lthtmlfigureZ{\lthtmlboxmathZ\lthtmllogmath\copy\sizebox
+       \global\let\@freelist\@savefreelist}%
+\newcommand\lthtmldisplayA{\bgroup\catcode`\_=8 \lthtmldisplayAi}%
+\newcommand\lthtmldisplayAi[1]{\lthtmlmathtype{#1}\egroup\lthtmlvboxmathA}%
+\newcommand\lthtmldisplayB[1]{\edef\preveqno{(\theequation)}%
+  \lthtmldisplayA{#1}\let\@eqnnum\relax}%
+\newcommand\lthtmldisplayZ{\lthtmlboxmathZ\lthtmllogmath\lthtmlsetmath}%
+\newcommand\lthtmlinlinemathA{\bgroup\catcode`\_=8 \lthtmlinlinemathB}
+\newcommand\lthtmlinlinemathB[1]{\lthtmlmathtype{#1}\egroup\lthtmlhboxmathA
+  \vrule height1.5ex width0pt }%
+\newcommand\lthtmlinlineA{\bgroup\catcode`\_=8 \lthtmlinlineB}%
+\newcommand\lthtmlinlineB[1]{\lthtmlmathtype{#1}\egroup\lthtmlhboxmathA}%
+\newcommand\lthtmlinlineZ{\egroup\expandafter\ifdim\dp\sizebox>0pt %
+  \expandafter\centerinlinemath\fi\lthtmllogmath\lthtmlsetinline}
+\newcommand\lthtmlinlinemathZ{\egroup\expandafter\ifdim\dp\sizebox>0pt %
+  \expandafter\centerinlinemath\fi\lthtmllogmath\lthtmlsetmath}
+\newcommand\lthtmlindisplaymathZ{\egroup %
+  \centerinlinemath\lthtmllogmath\lthtmlsetmath}
+\def\lthtmlsetinline{\hbox{\vrule width.1em \vtop{\vbox{%
+  \kern.1em\copy\sizebox}\ifdim\dp\sizebox>0pt\kern.1em\else\kern.3pt\fi
+  \ifdim\hsize>\wd\sizebox \hrule depth1pt\fi}}}
+\def\lthtmlsetmath{\hbox{\vrule width.1em\kern-.05em\vtop{\vbox{%
+  \kern.1em\kern0.8 pt\hbox{\hglue.17em\copy\sizebox\hglue0.8 pt}}\kern.3pt%
+  \ifdim\dp\sizebox>0pt\kern.1em\fi \kern0.8 pt%
+  \ifdim\hsize>\wd\sizebox \hrule depth1pt\fi}}}
+\def\centerinlinemath{%
+  \dimen1=\ifdim\ht\sizebox<\dp\sizebox \dp\sizebox\else\ht\sizebox\fi
+  \advance\dimen1by.5pt \vrule width0pt height\dimen1 depth\dimen1 
+ \dp\sizebox=\dimen1\ht\sizebox=\dimen1\relax}
+
+\def\lthtmlcheckvsize{\ifdim\ht\sizebox<\vsize 
+  \ifdim\wd\sizebox<\hsize\expandafter\hfill\fi \expandafter\vfill
+  \else\expandafter\vss\fi}%
+\providecommand{\selectlanguage}[1]{}%
+\makeatletter \tracingstats = 1 
+\providecommand{\Beta}{\textrm{B}}
+\providecommand{\Mu}{\textrm{M}}
+\providecommand{\Kappa}{\textrm{K}}
+\providecommand{\Rho}{\textrm{R}}
+\providecommand{\Epsilon}{\textrm{E}}
+\providecommand{\Chi}{\textrm{X}}
+\providecommand{\Iota}{\textrm{J}}
+\providecommand{\omicron}{\textrm{o}}
+\providecommand{\Zeta}{\textrm{Z}}
+\providecommand{\Eta}{\textrm{H}}
+\providecommand{\Nu}{\textrm{N}}
+\providecommand{\Omicron}{\textrm{O}}
+\providecommand{\Tau}{\textrm{T}}
+\providecommand{\Alpha}{\textrm{A}}
+
+
+\begin{document}
+\pagestyle{empty}\thispagestyle{empty}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength hsize=\the\hsize}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength vsize=\the\vsize}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength hoffset=\the\hoffset}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength voffset=\the\voffset}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength topmargin=\the\topmargin}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength topskip=\the\topskip}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength headheight=\the\headheight}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength headsep=\the\headsep}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength parskip=\the\parskip}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength oddsidemargin=\the\oddsidemargin}\lthtmltypeout{}%
+\makeatletter
+\if@twoside\lthtmltypeout{latex2htmlLength evensidemargin=\the\evensidemargin}%
+\else\lthtmltypeout{latex2htmlLength evensidemargin=\the\oddsidemargin}\fi%
+\lthtmltypeout{}%
+\makeatother
+\setcounter{page}{1}
+\onecolumn
+
+% !!! IMAGES START HERE !!!
+
+
+%
+\providecommand{\HRule}{\rule{\linewidth}{0.5mm}}%
+
+
+
+\newedenvironment{shell}{\footnotesize{}\linespread{0.9}\begin{shaded}}{\end{shaded}\linespread{1.0}\normalsize{}}%
+
+
+
+\setlength{\parindent}{2em}%
+
+\setlength{\parindent}{2em}
+
+
+\setlength{\fboxrule}{1pt}%
+
+\setlength{\fboxrule}{1pt}
+
+
+\setlength{\fboxsep}{5pt}%
+
+\setlength{\fboxsep}{5pt}
+
+\renewcommand{\headrulewidth}{0.4pt}
+
+\renewcommand{\footrulewidth}{0.4pt}
+{\newpage\clearpage
+\lthtmlpictureA{tex2html_wrap918}%
+\includegraphics[width=2in]{images/gnu-head}%
+\lthtmlpictureZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{section}
+\stepcounter{subsection}
+\stepcounter{section}
+\stepcounter{subsection}
+{\newpage\clearpage
+\lthtmlfigureA{shaded197}%
+\begin{shaded}\begin{verbatim}
+
+gtk_window_set_title(GTK_WINDOW(window), "awareness");\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlfigureA{shaded203}%
+\begin{shaded}\begin{verbatim}
+
+#define GTK_WINDOW(obj)                                                       
+        (G_TYPE_CHECK_INSTANCE_CAST((obj), GTK_TYPE_WINDOW, GtkWindow))\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlfigureA{shaded209}%
+\begin{shaded}\begin{verbatim}
+
+#define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)
+    (_G_TYPE_CIC ((instance), (g_type), c_type))\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlfigureA{shaded215}%
+\begin{shaded}\begin{verbatim}
+
+GObject                                                                       
+ +--GInitiallyUnowned                                                         
+     +-- GtkObject                                                            
+           +-- GtkWidget                                                      
+                 +-- GtkContainer                                             
+                       +-- GtkBin                                             
+                             +-- GtkWindow\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlfigureA{shaded221}%
+\begin{shaded}\begin{verbatim}
+
+struct _GtkWindow
+{
+  GtkBin bin;
+
+  gchar *GSEAL (title);
+  gchar *GSEAL (wmclass_name);
+  gchar *GSEAL (wmclass_class);
+  gchar *GSEAL (wm_role);
+
+  GtkWidget *GSEAL (focus_widget);
+  GtkWidget *GSEAL (default_widget);
+  GtkWindow *GSEAL (transient_parent);
+  GtkWindowGeometryInfo *GSEAL (geometry_info);
+  GdkWindow *GSEAL (frame);
+  GtkWindowGroup *GSEAL (group);
+
+  guint16 GSEAL (configure_request_count);
+  guint GSEAL (allow_shrink) : 1;
+  guint GSEAL (allow_grow) : 1;
+  guint GSEAL (configure_notify_received) : 1;
+  ...
+}
+
+struct _GtkContainer                                                          
+{                                                                             
+  GtkWidget widget;                                                           
+
+  GtkWidget *focus_child;                                                     
+
+  guint border_width : 16;                                                    
+
+  /*< private >*/                                                             
+  guint need_resize : 1;                                                      
+  guint resize_mode : 2;                                                      
+  guint reallocate_redraws : 1;                                               
+  guint has_focus_chain : 1;                                                  
+};\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{subsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+{\newpage\clearpage
+\lthtmlfigureA{shaded227}%
+\begin{shaded}\begin{verbatim}
+
+// 处理event回调函数
+gboolean callback_func(
+          GtkWidget *widget, GdkEvent *event, gpointer callback_data);
+// 处理signal回调函数
+void callback_func(
+          GtkWidget *widget,  gpointer callback_data);\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlfigureA{shaded233}%
+\begin{shaded}\begin{verbatim}
+
+按钮按下 --> 发出 button_press_event --> 预设处理函数
+                 --> 发出 clicked signal --> 预设处理函数\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{section}
+\stepcounter{subsection}
+{\newpage\clearpage
+\lthtmlfigureA{shaded329}%
+\begin{shaded}\begin{verbatim}
+
+GdkPixmap* gdk_pixmap_new (GdkDrawable *drawable, // to determine depth of pixmap
+                           gint width,            // width of pixmap in pixels
+                           gint height,           // height of pixmap in pixels
+                           gint depth);           // bits per pixel\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlfigureA{shaded335}%
+\begin{shaded}\begin{verbatim}
+
+void gdk_draw_drawable (GdkDrawable *target_drawable,
+                        GdkGC *gc,
+                        GdkDrawable *src,
+                        gint xsrc,
+                        gint ysrc,
+                        gint xdest,
+                        gint ydest,
+                        gint width,
+                        gint height);\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlfigureA{shaded341}%
+\begin{shaded}\begin{verbatim}
+
+void gtk_widget_queue_draw_area (GtkWidget *widget,
+                                 gint x,
+                                 gint y,
+                                 gint width,
+                                 gint height);\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{section}
+{\newpage\clearpage
+\lthtmlfigureA{shaded409}%
+\begin{shaded}\begin{verbatim}
+                         
+        +--------------+ 4               1+-------------+           
+        |   Diamond    +o-----------------+     mass    +           
+        +--------------+            +----o+-------------+           
+       russian_diamond_leftmove     |  2  russian_mass_leftmove     
+       russian_diamond_rightmove    |     russian_mass_rightmove    
+       russian_diamond_downmove     |     russian_mass_downmove     
+                                    |     russian_mass_translate    
+                                    |                               
+                        1           |                               
+        Russian主函数---------------+                               
+                                    |                               
+                                    |       russian_db_init         
+                                    |       russian_db_repair_matrix
+                                    |   1   +-----------+
+                                    +------o+ DataBase  +
+                                            +-----------+\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{subsection}
+{\newpage\clearpage
+\lthtmlfigureA{shaded415}%
+\begin{shaded}\begin{verbatim}
+
+  // 这里，用vbox和alignment实现，右边控件紧缩在一起的效果
+  // vbox中包含的widget
+  vbox = gtk_vbox_new(FALSE, 5);
+  // s_drawArea
+  // 设置s_drawArea的expose事件，在事件中显示图形
+  g_signal_connect(s_drawArea, "expose-event", G_CALLBACK(on_s_expose), draw_info);
+  // 实现右边控件紧缩在一起的效果，vbox的yoptions一定为要GTK_FILL
+  gtk_table_attach(GTK_TABLE(table), vbox, 1, 2, 1, 2, 0, GTK_FILL, 0, 0);    
+  gtk_widget_set_size_request(s_drawArea, 95, 110);
+  gtk_box_pack_start(GTK_BOX(vbox), s_drawArea, FALSE, FALSE, 0);
+  // button
+  button = gtk_button_new_with_label("begin");
+  g_signal_connect(button, "clicked", G_CALLBACK(on_begin), pause_button);
+  gtk_widget_set_size_request(button, 100, 30);
+  gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+  // alignment
+  alignment = gtk_alignment_new(0, 0, 0, 0);
+  gtk_widget_set_size_request(pause_button, 100, 30);
+  gtk_container_add(GTK_CONTAINER(alignment), pause_button);
+  // 实现右边控件紧缩在一起的效果，alignment的yoptions一定为要GTK_FILL|GTK_EXPAND
+  gtk_table_attach(GTK_TABLE(table), alignment, 1, 2, 2, 3, 0, GTK_FILL|GTK_EXPAND, 0, 0);\end{verbatim}
+\end{shaded}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{subsection}
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_inline941}%
+$ \sim$%
+\lthtmlinlinemathZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{subsection}
+\stepcounter{subsection}
+{\newpage\clearpage
+\lthtmlfigureA{figure950}%
+\begin{figure}\vbox{\include{tran}
+}\end{figure}%
+\lthtmlfigureZ
+\lthtmlcheckvsize\clearpage}
+
+
+\end{document}

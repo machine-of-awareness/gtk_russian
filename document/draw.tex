@@ -1,0 +1,92 @@
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "russian"
+%%% End: 
+
+\section{Gtk绘图方式}
+
+GtkWidget对象中，GtkDrawingArea是专门用于绘图的，不用设置它的GTK\_APP\_PAINTABLE
+标记，它的默认expose\_event回调函数不绘制形状，不会覆盖你自己绘制的图形。
+
+在Gtk中，可以在GtkWidget对象上绘图，但必须设置GTK\_APP\_PAINTABLE标记，否
+则，当对象接收到对象默认的expose\_event事件，你绘的图会被覆盖，当对象发生
+expose\_event事件时，事件传递过程是这样的：
+\begin{itemize}
+\item 自己定义的expose\_event回调函数运行，在函数里绘制需要的图形
+\item 对象默认的expose\_event回调函数运行，如果对象的GTK\_APP\_PAINTABLE标记未
+  置位，会在函数里绘制对象默记形状，你自己绘制的图形会被覆盖；如果对象
+  的GTK\_APP\_PAINTABLE标记置位，函数不会在函数里绘制对象默记形状
+\item 父类的expose\_event回调函数运行
+\end{itemize}
+
+绘图命令将图形绘制在GdkDrawable对象上，GdkDrawable是一个接口，支持绘制图
+形，包括GdkWindow，GdkPixmap，GdkBitmap对象，GdkDrawable是GObject的子类。Gtk绘图
+命令有：绘点、直线、弧线、多边形、文字、图片等。绘图的内容可以在GdkDrawable对象间
+方便的复制，也可以在GdkImage、GdkPixbuf之间复制，这些使GdkDrawable成为功能强大的
+对象。
+
+所有的绘图方法操作GdkDrawable对象，并将GdkDrawable对象作为方法的第一个参数。由于
+绘图中经常要指定绘图参数，如绘制的前景色、背景色、线宽等，GDK定义了GdkGC结构包含
+这些信息，这样用一个GdkGC参数，就可以将各种参数传递给绘图方法。
+
+\subsection{内存中绘图}
+
+直接在GtkWidget上绘图是简单的，当expose\_event事件发生时就有麻烦了，你需要记住绘
+制过的所有图形，然后在事件回调函数中重新绘制，这是很讨厌的。解决的办法是将图形绘
+制在内存中，但并不显示，当需要显示到屏幕或有expose\_event事件发生时，从内存复制相应
+的内容到GtkWidget对象中。我们直接操作的对象是GdkPixmap，是GdkDrawable的子
+类，GdkPixmap是资源对象。
+
+下面是生成GdkPixmap的方法，drawable参数是对应显示图形的GdkDrawable对象，一般
+是GtkWidget对象的GdkWindow对象(widget$\rightarrow{}$window)，显示到屏幕就是
+把GdkPixmap中的内容复制到drawable中。depth表示绘图毎一点占位的大小，安全的方式是
+置成-1，GdkPixmap会自动设制位的大小。
+
+\begin{shell}
+\begin{verbatim}
+GdkPixmap* gdk_pixmap_new (GdkDrawable *drawable, // to determine depth of pixmap
+                           gint width,            // width of pixmap in pixels
+                           gint height,           // height of pixmap in pixels
+                           gint depth);           // bits per pixel
+\end{verbatim}
+\end{shell}
+
+当将GdkPixmap中的内容（图形）显示到屏幕上（GtkDrawingArea的GdkWindow），需要调
+用gdk\_draw\_drawable方法，调用后，会自动将GdkPixmap内容复制到GdkWindow中。
+xsrc，ysrc是源（GdkPixmap）的起始坐标，xdest，ydest是目标（GdkWindow）的起始地
+址，width，height是复制区域大小，如果要复制整个区域，可以将width或height设成-1。
+
+\begin{shell}
+\begin{verbatim}
+void gdk_draw_drawable (GdkDrawable *target_drawable,
+                        GdkGC *gc,
+                        GdkDrawable *src,
+                        gint xsrc,
+                        gint ysrc,
+                        gint xdest,
+                        gint ydest,
+                        gint width,
+                        gint height);
+\end{verbatim}
+\end{shell}
+
+绘图的过程一般是这样的，先将图形绘制到GdkPixmap中，然后调
+用gtk\_widget\_queue\_draw\_area方法，方法中指定需要重绘的区域，系统会将这个区域
+置成invalidate状态，置invalidate状态会触发expose\_event，expose\_event回调函数参
+数中有区域信息，调用gdk\_draw\_drawable方法，将GdkPixmap中指定区域复制
+到GdkWindow的指定位置，图形就显示出来了。方法中的x，y是置成invalidate状态的区域起
+始坐标，width，height是区域大小。
+
+如果整个GdkDrawingArea被遮住又重新显示，系统会自动产生expose\_event事件，回调函数
+参数有区域信息，就是GdkDrawingArea的全部区域。
+
+\begin{shell}
+\begin{verbatim}
+void gtk_widget_queue_draw_area (GtkWidget *widget,
+                                 gint x,
+                                 gint y,
+                                 gint width,
+                                 gint height);
+\end{verbatim}
+\end{shell}

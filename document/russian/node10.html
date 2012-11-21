@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>内存中绘图</TITLE>
+<META NAME="description" CONTENT="内存中绘图">
+<META NAME="keywords" CONTENT="russian">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="russian.css">
+
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node9.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html155"
+  HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html151"
+  HREF="node9.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html147"
+  HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html153"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/usr/share/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html156"
+  HREF="node11.html">游戏的结构</A>
+<B> Up:</B> <A NAME="tex2html152"
+  HREF="node9.html">Gtk绘图方式</A>
+<B> Previous:</B> <A NAME="tex2html148"
+  HREF="node9.html">Gtk绘图方式</A>
+ &nbsp; <B>  <A NAME="tex2html154"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00041000000000000000">
+内存中绘图</A>
+</H2>
+
+<P>
+直接在GtkWidget上绘图是简单的，当expose_event事件发生时就有麻烦了，你需要记住绘
+制过的所有图形，然后在事件回调函数中重新绘制，这是很讨厌的。解决的办法是将图形绘
+制在内存中，但并不显示，当需要显示到屏幕或有expose_event事件发生时，从内存复制相应
+的内容到GtkWidget对象中。我们直接操作的对象是GdkPixmap，是GdkDrawable的子
+类，GdkPixmap是资源对象。
+
+<P>
+下面是生成GdkPixmap的方法，drawable参数是对应显示图形的GdkDrawable对象，一般
+是GtkWidget对象的GdkWindow对象(widget-&gt;window)，显示到屏幕就是把GdkPixmap中的内容
+复制到drawable中。depth表示绘图毎一点占位的大小，安全的方式是置成-1，GdkPixmap会
+自动设制位的大小。
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="727" HEIGHT="169" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{shaded}\begin{verbatim}GdkPixmap* gdk_pixmap_new (GdkDrawable *drawable...
+...ht of pixmap in pixels
+gint depth); // bits per pixel\end{verbatim}\end{shaded}">
+<BR>
+1.0</SMALL>
+<P>
+当将GdkPixmap中的内容（图形）显示到屏幕上（GtkDrawingArea的GdkWindow），需要调
+用gdk_draw_drawable方法，调用后，会自动将GdkPixmap内容复制到GdkWindow中。
+xsrc，ysrc是源（GdkPixmap）的起始坐标，xdest，ydest是目标（GdkWindow）的起始地
+址，width，height是复制区域大小，如果要复制整个区域，可以将width或height设成-1。
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="585" HEIGHT="300" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="\begin{shaded}\begin{verbatim}void gdk_draw_drawable (GdkDrawable *target_draw...
+...
+gint xdest,
+gint ydest,
+gint width,
+gint height);\end{verbatim}\end{shaded}">
+<BR>
+1.0</SMALL>
+<P>
+绘图的过程一般是这样的，先将图形绘制到GdkPixmap中，然后调
+用gtk_widget_queue_draw_area方法，方法中指定需要重绘的区域，系统会将这个区域
+置成invalidate状态，置invalidate状态会触发expose_event，expose_event回调函数参
+数中有区域信息，调用gdk_draw_drawable方法，将GdkPixmap中指定区域复制
+到GdkWindow的指定位置，图形就显示出来了。方法中的x，y是置成invalidate状态的区域起
+始坐标，width，height是区域大小。
+
+<P>
+如果整个GdkDrawingArea被遮住又重新显示，系统会自动产生expose_event事件，回调函数
+参数有区域信息，就是GdkDrawingArea的全部区域。
+
+<P>
+<SMALL CLASS="FOOTNOTESIZE">0.9
+<BR>
+<IMG
+ WIDTH="585" HEIGHT="195" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="\begin{shaded}\begin{verbatim}void gtk_widget_queue_draw_area (GtkWidget *widget,
+gint x,
+gint y,
+gint width,
+gint height);\end{verbatim}\end{shaded}">
+<BR>
+1.0</SMALL>
+<P>
+<BR><HR>
+<ADDRESS>
+the machine of awareness
+2012-09-18
+</ADDRESS>
+</BODY>
+</HTML>
