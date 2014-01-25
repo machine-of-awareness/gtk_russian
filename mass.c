@@ -1,6 +1,6 @@
 #include "support.h"
 
-// 向左移动
+// 向左移动  
 gboolean russian_mass_leftMove(Mass*);
 // 向右移动
 gboolean russian_mass_rightMove(Mass*);
